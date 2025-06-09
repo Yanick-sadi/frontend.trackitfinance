@@ -207,7 +207,7 @@ const GetStarted = () => {
                       type='text'
                       value={formData.fullName}
                       onChange={e => handleInputChange('fullName', e.target.value)}
-                      placeholder='John Niyontwali'
+                      placeholder='example name'
                       className={`pl-8 ${
                         errors.fullName ? 'border-red-500 focus-visible:ring-red-500' : 'border-input'
                       }`}
@@ -224,7 +224,7 @@ const GetStarted = () => {
                       type='email'
                       value={formData.email}
                       onChange={e => handleInputChange('email', e.target.value)}
-                      placeholder='nijohn0001@gmail.com'
+                      placeholder='example@gmail.com'
                       className={`pl-8  ${errors.email ? 'border-red-500 focus-visible:ring-red-500' : 'border-input'}`}
                     />
                   </div>

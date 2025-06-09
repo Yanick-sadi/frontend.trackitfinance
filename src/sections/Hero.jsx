@@ -18,7 +18,7 @@ const Hero = () => {
           <h1 className='text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight'>
             Welcome to
             <br />
-            <span className='text-secondary'>TrackItFinance</span>
+            <span className='text-secondary'>Jubilee Dental Finance</span>
           </h1>
 
           <p className='text-lg md:text-xl text-white/80 mb-12 max-w-2xl mx-auto'>

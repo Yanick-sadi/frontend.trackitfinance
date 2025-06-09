@@ -18,7 +18,7 @@ const Footer = () => {
               {/* Logo and description */}
               <div className='md:col-span-1'>
                 <h2 className='font-extrabold text-2xl mb-4'>
-                  Track<span className='text-secondary'>It</span> <span className='text-secondary'>Finance</span>
+                  Track<span className='text-secondary'>It</span><span className='text-secondary'>Finance</span>
                 </h2>
                 <p className='text-white/70 text-sm leading-relaxed'>
                   Empowering your financial journey with intuitive tracking and insights.

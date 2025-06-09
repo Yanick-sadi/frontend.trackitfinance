@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Users,
   DollarSign,
@@ -10,6 +9,7 @@ import {
   Calendar,
   Building2,
   Activity,
+  Download,
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../../components/Card';
 import { Skeleton } from '../../components/Skeleton';
@@ -33,6 +33,7 @@ import {
 } from 'recharts';
 import { adminNavLinks } from '../../constants';
 import Layout from '../../layout';
+import * as XLSX from 'xlsx';
 
 const Dashboard = () => {
   const { data: organizationStatistics, isLoading, error, refetch } = useGetOrganizationStatisticsQuery();
@@ -61,6 +62,134 @@ const Dashboard = () => {
     }).format(amount);
 
     return formatted.replace(/RF|FRw|RWF/, 'Rwf');
+  };
+
+  // Download Excel Report Function
+  const downloadExcelReport = () => {
+    if (!organizationStatistics?.data) return;
+
+    const {userStatistics, financialStatistics,  organizationInfo} = organizationStatistics.data;
+
+    // Create workbook
+    const workbook = XLSX.utils.book_new();
+
+
+
+    // Financial Summary Sheet
+    const financialSummary = [
+      ['Financial Summary'],
+      ['Generated on:', new Date().toLocaleDateString()],
+      [''],
+      ['Savings Statistics'],
+      ['Total Savings Amount:', financialStatistics?.savings?.totalAmount || 0],
+      ['Total Savings Count:', financialStatistics?.savings?.totalCount || 0],
+      ['Average Per User:', financialStatistics?.savings?.averagePerUser || 0],
+      ['Recent 30 Days Amount:', financialStatistics?.savings?.recent30Days?.amount || 0],
+      ['Recent 30 Days Count:', financialStatistics?.savings?.recent30Days?.count || 0],
+      [''],
+      ['Loan Statistics'],
+      ['Approved Loans Amount:', financialStatistics?.loans?.approved?.amount || 0],
+      ['Approved Loans Count:', financialStatistics?.loans?.approved?.count || 0],
+      ['Pending Loans Amount:', financialStatistics?.loans?.pending?.amount || 0],
+      ['Pending Loans Count:', financialStatistics?.loans?.pending?.count || 0],
+      ['Repaid Loans Amount:', financialStatistics?.loans?.repaid?.amount || 0],
+      ['Repaid Loans Count:', financialStatistics?.loans?.repaid?.count || 0],
+      ['Recent 30 Days Amount:', financialStatistics?.loans?.recent30Days?.amount || 0],
+      ['Recent 30 Days Count:', financialStatistics?.loans?.recent30Days?.count || 0],
+      [''],
+      ['Repayment Statistics'],
+      ['Total Repayments:', financialStatistics?.repayments?.totalAmount || 0],
+      ['Recent 30 Days Amount:', financialStatistics?.repayments?.recent30Days?.amount || 0],
+      ['Recent 30 Days Count:', financialStatistics?.repayments?.recent30Days?.count || 0],
+      [''],
+      ['Summary Metrics'],
+      ['Total Financial Activity:', financialStatistics?.summary?.totalFinancialActivity || 0],
+      ['Net Financial Position:', financialStatistics?.summary?.netFinancialPosition || 0],
+      ['Outstanding Loan Balance:', financialStatistics?.summary?.outstandingLoanBalance || 0],
+      ['Organization Liquidity:', financialStatistics?.summary?.organizationLiquidity || 0],
+    ];
+
+    const financialSheet = XLSX.utils.aoa_to_sheet(financialSummary);
+    XLSX.utils.book_append_sheet(workbook, financialSheet, 'Financial Summary');
+
+    // User Distribution Sheet
+    const roleData = [
+      ['User Distribution'],
+      ['Role', 'Count'],
+      ['Admins', userStatistics?.adminCount || 0],
+      ['Employees', userStatistics?.employeeCount || 0],
+      ['Total', userStatistics?.totalUsers || 0],
+    ];
+
+    const userSheet = XLSX.utils.aoa_to_sheet(roleData);
+    XLSX.utils.book_append_sheet(workbook, userSheet, 'User Distribution');
+
+    // Organization Overview Sheet
+    const orgOverview = [
+      ['Organization Report'],
+      ['Generated on:', new Date().toLocaleDateString()],
+      [''],
+      ['Organization Information'],
+      ['Name:', organizationInfo?.name || 'N/A'],
+      ['Address:', organizationInfo?.address || 'N/A'],
+      ['Age (Days):', organizationInfo?.ageInDays || 0],
+      ['Age (Years):', Math.floor((organizationInfo?.ageInDays || 0) / 365)],
+      [''],
+      ['User Statistics'],
+      ['Total Users:', userStatistics?.totalUsers || 0],
+      ['Admin Count:', userStatistics?.adminCount || 0],
+      ['Employee Count:', userStatistics?.employeeCount || 0],
+    ];
+
+    const orgSheet = XLSX.utils.aoa_to_sheet(orgOverview);
+    XLSX.utils.book_append_sheet(workbook, orgSheet, 'Organization Overview');
+    
+    // Loan Status Breakdown Sheet
+    const loanStatusData = [
+      ['Loan Status Breakdown'],
+      ['Status', 'Amount', 'Count'],
+      ['Approved', financialStatistics?.loans?.approved?.amount || 0, financialStatistics?.loans?.approved?.count || 0],
+      ['Pending', financialStatistics?.loans?.pending?.amount || 0, financialStatistics?.loans?.pending?.count || 0],
+      ['Repaid', financialStatistics?.loans?.repaid?.amount || 0, financialStatistics?.loans?.repaid?.count || 0],
+    ];
+
+    const loanSheet = XLSX.utils.aoa_to_sheet(loanStatusData);
+    XLSX.utils.book_append_sheet(workbook, loanSheet, 'Loan Status');
+
+    // Monthly Trends Sheet (sample data)
+    const monthlyTrendData = [
+      ['Monthly Financial Trends'],
+      ['Month', 'Savings', 'Loans', 'Repayments'],
+      ['Jan', 180000, 120000, 85000],
+      ['Feb', 220000, 180000, 95000],
+      ['Mar', 280000, 220000, 140000],
+      ['Apr', 350000, 280000, 180000],
+      ['May', 420000, 340000, 220000],
+      ['Jun', 485000, 340000, 185000],
+    ];
+
+    const trendsSheet = XLSX.utils.aoa_to_sheet(monthlyTrendData);
+    XLSX.utils.book_append_sheet(workbook, trendsSheet, 'Monthly Trends');
+
+    // Recent Activity Sheet
+    const recentActivity = [
+      ['30-Day Activity Summary'],
+      ['Activity Type', 'Amount', 'Transaction Count'],
+      ['Recent Savings', financialStatistics?.savings?.recent30Days?.amount || 0, financialStatistics?.savings?.recent30Days?.count || 0],
+      ['Recent Loans', financialStatistics?.loans?.recent30Days?.amount || 0, financialStatistics?.loans?.recent30Days?.count || 0],
+      ['Recent Repayments', financialStatistics?.repayments?.recent30Days?.amount || 0, financialStatistics?.repayments?.recent30Days?.count || 0],
+    ];
+
+    const activitySheet = XLSX.utils.aoa_to_sheet(recentActivity);
+    XLSX.utils.book_append_sheet(workbook, activitySheet, 'Recent Activity');
+
+    // Generate filename with organization name and date
+    const orgName = organizationInfo?.name?.replace(/[^a-z0-9]/gi, '_') || 'Organization';
+    const dateStr = new Date().toISOString().split('T')[0];
+    const filename = `${orgName}_Dashboard_Report_${dateStr}.xlsx`;
+
+    // Write and download the file
+    XLSX.writeFile(workbook, filename);
   };
 
   if (isLoading) {
@@ -252,6 +381,14 @@ const Dashboard = () => {
                 month: 'long',
                 day: 'numeric',
               })}
+            </Button>
+            <Button
+              onClick={downloadExcelReport}
+              variant='outline'
+              className='gap-2 text-sm border-green-200 hover:bg-green-50 text-green-700'
+            >
+              <Download className='h-4 w-4' />
+              Download Report
             </Button>
             <Button
               onClick={refetch}

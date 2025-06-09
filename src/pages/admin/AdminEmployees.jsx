@@ -276,6 +276,10 @@ const AdminEmployees = () => {
           rules={{
             required: 'Full name is required',
             minLength: { value: 2, message: 'Minimum 2 characters' },
+            pattern: {
+              value: /^[a-zA-Z\s]+$/,
+              message: 'Only letters and spaces are allowed',
+            },
           }}
           render={({ field, fieldState }) => (
             <>
