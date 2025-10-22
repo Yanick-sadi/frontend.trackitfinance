@@ -1,12 +1,24 @@
-# React + Vite
+# 💰 TrackItFinance App  
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack web application designed to help organizations and employees manage finances transparently. Employers can approve loans, monitor savings, and view financial reports, while employees can track their personal savings and loan status in real time.  
 
-Currently, two official plugins are available:
+## ⚙️ Tech Stack  
+- **Frontend:** React.js, Tailwind CSS  
+- **Backend:** Node.js, Express.js  
+- **Database:** MySQL  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features  
+- Role-based access for admins and employees  
+- Real-time dashboards for financial overviews  
+- Automated loan approval workflow  
+- Secure database integration and data persistence  
 
-## Expanding the ESLint configuration
+## 🧠 What I Learned  
+- Full-stack integration using REST APIs  
+- Designing responsive dashboards and backend endpoints  
+- Handling data securely using relational databases  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🔗 Live Demo & Repository  
+[GitHub Repository](https://github.com/Yanick-sadi/TrackItFinance-App)  
+
+---
